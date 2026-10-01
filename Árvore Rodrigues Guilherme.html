@@ -1,0 +1,244 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Árvore Rodrigues Guilherme</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:wght@400;600;700&display=swap">
+<style>
+/* Layout: coluna de famílias (casal + pais de cada um + filhos) à esquerda, ficha da pessoa à direita (gaveta em baixo no telemóvel).
+   Cores: mar de Lagos (linha directa), âmbar só para o que falta confirmar. */
+:root{
+  --bg:#eef1f2; --surface:#fbfcfc; --ink:#16232b; --muted:#566872; --line:#c7d2d8;
+  --sea:#0e6a75; --sea-ink:#ffffff; --sea-soft:#d8ebee; --amber:#8a5a0a; --amber-soft:#f4e7c9;
+  --display:"Spectral",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1a20; --surface:#16252d; --ink:#e4edf0; --muted:#95a9b3; --line:#2b3f4a;
+  --sea:#52c1cd; --sea-ink:#0b1b20; --sea-soft:#17383e; --amber:#e2b65c; --amber-soft:#382e14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1a20; --surface:#16252d; --ink:#e4edf0; --muted:#95a9b3; --line:#2b3f4a;
+  --sea:#52c1cd; --sea-ink:#0b1b20; --sea-soft:#17383e; --amber:#e2b65c; --amber-soft:#382e14; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:24px 96px}
+*{box-sizing:border-box}
+.wrap{max-width:1120px;margin-inline:auto}
+header{display:grid;gap:14px;margin-bottom:28px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,5vw,3rem);line-height:1.05;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0;max-width:60ch}
+.bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{font:inherit;font-size:.85rem;padding:7px 12px;border:0;background:var(--surface);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--sea);color:var(--sea-ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:5px}
+.k-line{background:var(--sea)} .k-anc{border:1.5px solid var(--sea);background:var(--surface)} .k-side{border:1.5px dashed var(--muted)} .k-flag{background:var(--amber)}
+main{display:grid;gap:28px}
+@media(min-width:900px){main{grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+.fam{border-top:2px solid var(--line);padding-block:18px 26px;display:grid;gap:14px}
+.fam.has-line{border-top-color:var(--sea)}
+.fam h2{font-family:var(--display);font-size:1.15rem;margin:0;font-weight:600}
+.fam .meta{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin:2px 0 0}
+.couple{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:start}
+.couple .x{align-self:center;color:var(--muted);font-family:var(--display);font-size:1.3rem;padding-top:4px}
+@media(max-width:560px){.couple{grid-template-columns:1fr}.couple .x{display:none}}
+.col{display:grid;gap:8px;min-width:0}
+.parents{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.78rem;color:var(--muted)}
+.kids-label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 -6px}
+.kids{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;text-align:left;cursor:pointer;border-radius:8px;padding:9px 12px;min-width:0;display:grid;gap:1px;color:var(--ink);background:var(--surface);border:1.5px solid var(--sea)}
+.chip b{font-weight:600;font-size:.92rem;line-height:1.25}
+.chip small{font-size:.74rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip.t-line{background:var(--sea);color:var(--sea-ink)} .chip.t-line small{color:var(--sea-ink);opacity:.82}
+.chip.t-side{border:1.5px dashed var(--muted)}
+.chip.sm{padding:5px 9px} .chip.sm b{font-size:.8rem;font-weight:500}
+.chip[aria-current="true"]{outline:3px solid var(--amber);outline-offset:2px}
+.chip:focus-visible,.seg button:focus-visible,.close:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber);margin-left:6px;vertical-align:1px}
+.only-line .t-side,.only-line .parents{display:none}
+.only-line .kids-label.side-only{display:none}
+aside{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;position:sticky;top:env(safe-area-inset-top,0px);margin-top:18px;max-height:calc(100vh - 24px);overflow:auto}
+@media(max-width:899px){
+  aside{position:fixed;left:0;right:0;bottom:0;margin:0;border-radius:14px 14px 0 0;max-height:72vh;z-index:5;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(105%);visibility:hidden;transition:transform .2s}
+  aside.open{transform:none;visibility:visible}
+}
+@media(prefers-reduced-motion:reduce){aside{transition:none}}
+.close{float:right;font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
+@media(min-width:900px){.close{display:none}}
+aside h3{font-family:var(--display);font-size:1.45rem;line-height:1.15;margin:0 0 2px;text-wrap:balance}
+.rel{color:var(--sea);font-weight:600;font-size:.85rem;margin:0 0 12px}
+.empty{color:var(--muted);margin:0}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 14px;font-size:.88rem}
+dt{color:var(--muted)} dd{margin:0;font-variant-numeric:tabular-nums}
+.notes{margin:0 0 14px;padding-left:18px;font-size:.88rem} .notes li{margin-bottom:4px}
+.flag{background:var(--amber-soft);color:var(--ink);border-left:4px solid var(--amber);padding:8px 10px;border-radius:0 6px 6px 0;font-size:.85rem;margin:0 0 14px}
+.sec{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.src{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin:0 0 6px;overflow-wrap:anywhere}
+.src span{color:var(--ink)}
+.open-sec{margin-top:34px;border-top:2px solid var(--line);padding-top:18px}
+.open-sec h2{font-family:var(--display);font-size:1.3rem;margin:0 0 10px}
+.open-sec ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.9rem;max-width:70ch}
+.ref{display:grid;gap:1px;padding:9px 0 9px 12px;border-left:3px solid var(--sea);margin:0 0 8px;font-size:.82rem;min-width:0}
+.ref b{font-weight:600;font-size:.86rem}
+.ref span{color:var(--muted)} .ref .who{color:var(--sea)}
+.ref code{font-family:var(--mono);font-size:.74rem;overflow-wrap:anywhere}
+.hint{font-size:.8rem;color:var(--muted);margin:6px 0 0}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Rodrigues Guilherme</h1>
+  <p class="sub">Linha paterna, de Lagos (Luz e Barão de São João) até Lisboa e Setúbal. Cada nome abre a ficha com datas, sítios e a cota do livro onde o assento está.</p>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Mostrar">
+      <button id="b-all" aria-pressed="true">Toda a família</button>
+      <button id="b-line" aria-pressed="false">Só linha directa</button>
+    </div>
+    <div class="legend">
+      <span><i class="k-line"></i>linha Guilherme</span><span><i class="k-anc"></i>cônjuges e antepassados</span><span><i class="k-side"></i>irmãos</span><span><i class="k-flag"></i>falta confirmar</span>
+    </div>
+  </div>
+</header>
+<main>
+  <div id="tree"></div>
+  <aside id="panel" aria-live="polite"></aside>
+</main>
+<section class="open-sec" id="open"></section>
+<section class="open-sec" id="refs"></section>
+</div>
+
+<script>
+const P={
+inc:{n:"Pai incógnito",t:"anc",rel:"hexavô",notes:["Não consta o nome. Os assentos de 1796 e 1817 dizem “pai incógnito”."],src:["b1796","m1817"]},
+mcon:{n:"Maria da Conceição",t:"anc",rel:"hexavó",d:"Albufeira",notes:["Solteira, natural de Albufeira. Mãe de Rodrigo de Souza."],src:["b1796"]},
+rod:{n:"Rodrigo de Souza",t:"line",rel:"pentavô",nasc:"c. 1750–1770 (estimado)",local:"Albufeira",morte:"depois de Nov 1818 (por encontrar)",notes:["Filho natural de Maria da Conceição, pai incógnito.","Vivia em 1796 no sítio de Matto Brancos (Luz) e em 1818 no mesmo sítio, já no Barão de São João.","Em 1818 e 1852 os escrivães escrevem “Vila de Lagôa”. É provável lapso: 1796 e 1817 dizem Albufeira.","Não aparece nos óbitos do Barão de São João, 1802–1860."],flag:"Falta o baptismo (Albufeira só está digitalizada a partir de 1833), o casamento e o óbito.",src:["b1796","m1817","b1818"]},
+el:{n:"Estêvão Lopes",t:"anc",rel:"hexavô",d:"Barão de S. Miguel [?]",notes:["Pai de Maria da Glória. Natural de Barão de São Miguel [?]."],src:["b1796"]},
+mas:{n:"Maria d'Assumpção",t:"anc",rel:"hexavó",d:"Barão de S. Miguel [?]",notes:["Mãe de Maria da Glória. Natural de Barão de São Miguel [?]."],src:["b1796"]},
+mgl:{n:"Maria da Glória",t:"anc",rel:"pentavó",local:"Barão de São João",notes:["Natural do Barão de São João (1796, 1817). Em 1818 e 1852 aparece como “de Bensafrim [?]”.","Filha de Estêvão Lopes e Maria d'Assumpção."],flag:"Baptismo, casamento e óbito por encontrar. Não há óbito dela no livro do Barão de São João até 1860.",src:["b1796","m1817"]},
+vic:{n:"Vicente",t:"side",rel:"irmão do tetravô (gémeo)",nasc:"4 Abr 1796",local:"Matto Brancos, Luz",notes:["Gémeo de Guilherme. Baptizado a 11 Abr 1796 pelo P.e Joaquim José Corrêa.","Padrinho: Vicente José de Freitas, capeiro do Capitão Miguel José Ferreira, de Lagos. Madrinha: Maria Jozefa Carrada."],src:["b1796"]},
+gui:{n:"Guilherme Rodrigues",t:"line",rel:"tetravô",nasc:"4 Abr 1796",local:"Matto Brancos, Luz",notes:["Baptizado a 11 Abr 1796. Gémeo de Vicente.","Casou solteiro, aos 21 anos, a 9 Jul 1817. Lavrador (1875).","O baptismo do filho (1818) fala em “primeiro matrimónio”."],src:["b1796","m1817"]},
+jv:{n:"José Vicente",t:"anc",rel:"hexavô",d:"Bensafrim / Barão de S. João",notes:["Em 1793 “natural de Barão de São João”; em 1817 “de Bensafrim”. As duas freguesias tinham o mesmo pároco."],src:["m1784","b1793"]},
+lg:{n:"Luzia da Graça",t:"anc",rel:"hexavó",d:"Mexilhoeira Grande",notes:["Natural da Mexilhoeira Grande (Portimão)."],src:["b1793"]},
+df:{n:"Domingos Fernandez",t:"anc",rel:"hexavô",d:"Vila do Bispo",notes:["Natural de Vila do Bispo. Já morto em 1784."],src:["m1784"]},
+jen:{n:"Jozefa da Encarnação",t:"anc",rel:"hexavó",d:"Raposeira",notes:["Natural da Raposeira (Vila do Bispo). Já morta em 1784."],src:["b1793"]},
+mv:{n:"Manoel Vicente",t:"anc",rel:"pentavô",local:"Barão de São João",notes:["Natural do Barão de São João. Casou a 14 Set 1784.","Em 1818 vivia no sítio do Pedragoa [?]."],src:["m1784"]},
+ben:{n:"Benedicta Maria",t:"anc",rel:"pentavó",local:"Vila do Bispo",notes:["Escrita também Benedita. Natural de Vila do Bispo, filha de Domingos Fernandez e Jozefa da Encarnação."],src:["m1784"]},
+joa:{n:"João",t:"side",rel:"irmão da tetravó",nasc:"Ago 1793 (dia ilegível)",local:"Barão de São João",notes:["Baptizado a 25 Ago 1793. Padrinhos: João Evangelista, natural de Lagos, e Maria Lubra [?]."],src:["b1793"]},
+mt:{n:"Maria Thereza",t:"anc",rel:"tetravó",nasc:"c. 1785–1800 (por encontrar)",local:"Barão de São João",notes:["Solteira em 1817. Em 1852 o escrivão escreveu “de Bensafrim”."],flag:"Baptismo por encontrar. Vistas ~24 páginas do livro de 1763–1803 (1791–1799).",src:["m1817","o1875"]},
+jscb:{n:"José de Souza Castello Branco",t:"anc",rel:"pentavô",d:"Luz",notes:["Avô paterno de Catharina Maria."],src:["m1852"]},
+mi:{n:"Maria Izabel",t:"anc",rel:"pentavó",d:"Luz",notes:["Avó paterna de Catharina Maria."],src:["m1852"]},
+afl:{n:"Alferes António Luís Freire",t:"anc",rel:"pentavô",d:"Alvor",notes:["Avô materno de Catharina Maria. Alferes."],src:["m1852"]},
+jmp:{n:"Juliana Maria Pacheco",t:"anc",rel:"pentavó",d:"Ameixoeira [?] Grande",notes:["Avó materna de Catharina Maria. A leitura “Ameixoeira Grande” é provavelmente Mexilhoeira Grande."],src:["m1852"]},
+ajs:{n:"António Joaquim de Souza",t:"anc",rel:"tetravô",d:"Luz",notes:["Natural da Luz. Escrito Sousa nos baptismos dos netos."],flag:"Casamento com Anna Joaquina por encontrar. Cai na lacuna 1803–1827 do livro de casamentos da Luz, que não existe digitalizado.",src:["m1852"]},
+anj:{n:"Anna Joaquina",t:"anc",rel:"tetravó",d:"Ameixoeira [?] Grande",notes:["Natural de “Ameixoeira Grande” [?], provavelmente Mexilhoeira Grande."],src:["m1852"]},
+maria20:{n:"Maria",t:"side",rel:"irmã da trisavó",nasc:"Ago 1820 (baptismo)",local:"Luz",notes:["Primeira filha com este nome. Prova que o casal já estava casado em Ago 1820."],src:["b1820"]},
+ant53:{n:"António",t:"side",rel:"irmão da trisavó",morte:"30 Set 1853",local:"Luz",notes:["Filho de António Joaquim de Souza e Anna Joaquina. Encontrado por acaso ao procurar o óbito de Rodrigo de Souza."],src:["o1853"]},
+cat:{n:"Catharina Maria",t:"anc",rel:"trisavó",nasc:"por encontrar (1818–1835 não revisto por completo)",local:"Luz",notes:["Filha de António Joaquim de Souza e Anna Joaquina. Casou solteira em 1852."],flag:"Baptismo e óbito por encontrar. Não está nos óbitos da Luz 1876–1905 (384 páginas). A colecção da Luz acaba em 1905.",src:["m1852"]},
+man18:{n:"Manoel Rodrigues Guilherme",t:"line",rel:"trisavô",nasc:"26 Out 1818",local:"Barão de São João, sítio do Pedragoa [?]",morte:"12 Out 1875, 5h, Almadena (Luz). 55 anos",notes:["Baptizado a 1 Nov 1818. Padrinhos: Vicente Lourenço e a filha Maria Gertrudes, do Monte Velho (Bensafrim).","Trabalhador. Casado com Catharina Maria. Sem testamento, deixou filhos. Sepultado no cemitério da Luz.","O casamento de 1852 diz “natural da Luz”: é lapso do escrivão. Baptismo e óbito dizem Barão de São João.","FamilySearch: L26R-FGX."],src:["b1818","o1875","m1852"]},
+man62:{n:"Manuel Rodrigues Guilherme",t:"line",rel:"bisavô",nasc:"8 Mai 1862 (meio-dia)",local:"Almadena, Luz",morte:"1910",notes:["Baptizado a 30 Mai 1862 (n.º 17). Padrinho: José Rodrigues Netto [?], almocreve.","Apontador. Casou com Thereza de Jesus, de Monchique."],flag:"Local e data exactos da morte e do casamento por confirmar.",src:["b1862"]},
+mar70:{n:"Maria",t:"side",rel:"irmã do bisavô",nasc:"5 Mar 1870",local:"Almadena, Luz",notes:["Baptizada a 20 Mar 1870 (n.º 11, fl. 22). Padrinho: Francisco Bento, proprietário."],src:["b1870"]},
+thj:{n:"Thereza de Jesus",t:"anc",rel:"bisavó",d:"Monchique",notes:["Natural de Monchique."],src:[]},
+leo:{n:"Leonor",t:"side",rel:"irmã do avô",nasc:"1892",notes:["Legitimada em 1895."],src:[]},
+lau:{n:"Laura",t:"side",rel:"irmã do avô",nasc:"1893",notes:["Legitimada em 1895."],src:[]},
+man01:{n:"Manuel Rodrigues Guilherme",t:"line",rel:"avô",nasc:"1901",local:"Lisboa",morte:"1949",notes:["Casou com Rosinda de Jesus em Abr 1923."],flag:"Dia do casamento por confirmar (3 ou 8 de Abril). Assento n.º 74, ADSTB ou Conservatória.",src:[]},
+ros:{n:"Rosinda de Jesus",t:"anc",rel:"avó",nasc:"1905",morte:"1993",notes:[],src:[]},
+mt25:{n:"Maria Teresa",t:"side",rel:"tia",nasc:"1925",notes:[],src:[]},
+art:{n:"Artur dos Anjos Guilherme",t:"side",rel:"tio",nasc:"15 Jun 1927",notes:["Aparece no recenseamento de 1947."],src:[]},
+ida:{n:"Idalina",t:"side",rel:"tia",nasc:"1934",notes:[],src:[]},
+mlu:{n:"Maria Luísa",t:"side",rel:"tia",nasc:"1934",notes:[],src:[]},
+rog:{n:"Rogério Rodrigues Guilherme",t:"line",rel:"pai",nasc:"1936",morte:"1997",notes:[],src:[]},
+mmg:{n:"Maria Margarida",t:"side",rel:"tia",nasc:"1944",notes:[],src:[]},
+mar:{n:"Mário",t:"line",rel:"",notes:[],src:[]}
+};
+const REF={
+b1796:{t:"Baptismo dos gémeos Vicente e Guilherme",data:"11 Abr 1796",livro:"Luz (Lagos), Baptismos 1787–1803",cota:"PT/TT/PRQ/PLGS03/001/B4",loc:"c. fl. 58 · imagens 60 e 61"},
+m1784:{t:"Casamento de Manoel Vicente e Benedicta Maria",data:"14 Set 1784",livro:"Barão de São João, Casamentos 1715–1802",cota:"PT/TT/PRQ/PLGS01/002/C1",loc:"imagem 58"},
+b1793:{t:"Baptismo de João, filho de Manoel Vicente",data:"25 Ago 1793",livro:"Barão de São João, Baptismos 1763–1803",cota:"PT/TT/PRQ/PLGS01/001/B2",loc:"fl. 66 e 66 verso · imagens 68 e 69"},
+m1817:{t:"Casamento de Guilherme Rodrigues e Maria Thereza",data:"9 Jul 1817",livro:"Barão de São João, Casamentos 1803–1824",cota:"PT/TT/PRQ/PLGS01/002/C2",loc:"imagem 12 · mandado da Câmara Eclesiástica, fl. 118"},
+b1818:{t:"Baptismo de Manoel, filho de Guilherme Rodrigues",data:"1 Nov 1818",livro:"Barão de São João, Baptismos 1816–1837",cota:"PT/TT/PRQ/PLGS01/001/B4",loc:"fl. 6 · imagem 7"},
+b1820:{t:"Baptismo de Maria, filha de António Joaquim de Souza",data:"Ago 1820",livro:"Luz, Baptismos 1818–1847",cota:"PT/TT/PRQ/PLGS03/001/B6",loc:"fl. 16"},
+m1852:{t:"Casamento de Manoel Rodrigues e Catharina Maria",data:"23 Nov 1852",livro:"Luz, Casamentos 1796–1859 (usado 1796–1803 e 1827–1859)",cota:"PT/TT/PRQ/PLGS03/002/C2",loc:"fl. 93 recto e verso · imagens 95 e 96"},
+b1862:{t:"Baptismo de Manuel, filho de Manoel Rodrigues",data:"30 Mai 1862",livro:"Luz, Baptismos 1860–1863",cota:"PT/ADFAR/PRQ/LGS03/001/0009",loc:"assento n.º 17 · imagem 36"},
+b1870:{t:"Baptismo de Maria, filha de Manoel Rodrigues",data:"20 Mar 1870",livro:"Luz, Baptismos 1869–1870",cota:"PT/ADFAR/PRQ/LGS03/001/0011",loc:"assento n.º 11, fl. 22 · imagem 23"},
+o1853:{t:"Óbito de António, filho de António Joaquim de Souza",data:"30 Set 1853",livro:"Luz, Óbitos 1834–1859",cota:"PT/ADFAR/PRQ/LGS03/003/0004",loc:"pág. 38"},
+o1875:{t:"Óbito de Manoel Rodrigues Guilherme",data:"12 Out 1875",livro:"Luz, Óbitos 1875 (Set–Dez)",cota:"PT/ADFAR/PRQ/LGS03/003/0012",loc:"assento n.º 30, fl. 45 e 46 · imagens 9 e 10"}
+};
+const NEG={
+rod:["Óbitos, Barão de São João 1802–1860 (PT/TT/PRQ/PLGS01/003/O2 e PT/ADFAR/PRQ/LGS01/003/0004): revistos por inteiro. Não há livro digitalizado de 1861 a 1875.","Óbitos, Luz 1803–1875 (O3, 0004, 0005 a 0011 e o de 1875): revistos por inteiro, 1803 a 1875 sem falhas. Rodrigo e Maria da Glória não aparecem.","Casamento com Maria da Glória: Luz 1776–1795 (págs. 65–104) e Barão de São João 1774–1802 (págs. 56–78), sem resultado.","Casamento: Barão de São Miguel, Casamentos 1789–1859 (PT/TT/PRQ/PVBP01/002/C1), págs. 1–15 de 64, sem resultado. Livro muito degradado e fora de ordem. Não há livro anterior a 1789."],
+mgl:["Óbitos, Luz 1803–1875 e Barão de São João 1802–1860: várias Marias da Glória, nenhuma casada com Rodrigo.","Barão de São Miguel, Casamentos 1789–1859, págs. 1–15: nenhuma Maria da Glória filha de Estêvão Lopes."],
+mt:["Barão de São João, Baptismos 1763–1803: ~24 páginas revistas (1791–1799)."],
+cat:["Luz, Baptismos 1818–1847 (PT/TT/PRQ/PLGS03/001/B6): ~45 páginas revistas, 1818–1835.","Luz, Óbitos 1876–1905: 30 livros, 384 páginas, sem resultado."],
+ajs:["Luz, Casamentos C2: o livro físico salta de 17 Mai 1803 para 17 Jan 1827. O casamento (antes de Ago 1820) não está em livro digitalizado."]
+};
+const F=[
+{t:"Rodrigo de Souza e Maria da Glória",m:"Casamento antes de 4 Abr 1796 · local por descobrir",h:"rod",w:"mgl",hp:["inc","mcon"],wp:["el","mas"],k:["vic","gui"]},
+{t:"Manoel Vicente e Benedicta Maria",m:"Casamento a 14 Set 1784 · Barão de São João",h:"mv",w:"ben",hp:["jv","lg"],wp:["df","jen"],k:["joa","mt"]},
+{t:"Guilherme Rodrigues e Maria Thereza",m:"Casamento a 9 Jul 1817 · Barão de São João",h:"gui",w:"mt",k:["man18"]},
+{t:"António Joaquim de Souza e Anna Joaquina",m:"Casamento antes de Ago 1820 · local por descobrir",h:"ajs",w:"anj",hp:["jscb","mi"],wp:["afl","jmp"],k:["maria20","cat","ant53"]},
+{t:"Manoel Rodrigues e Catharina Maria",m:"Casamento a 23 Nov 1852 · Luz",h:"man18",w:"cat",k:["man62","mar70"]},
+{t:"Manuel Rodrigues Guilherme e Thereza de Jesus",m:"Data do casamento por confirmar · filhas legitimadas em 1895",h:"man62",w:"thj",k:["leo","lau","man01"]},
+{t:"Manuel Rodrigues Guilherme e Rosinda de Jesus",m:"Casamento em Abr 1923",h:"man01",w:"ros",k:["mt25","art","ida","mlu","rog","mmg"]},
+{t:"Rogério Rodrigues Guilherme",m:"A família da mãe fica fora desta árvore",h:"rog",w:null,k:["mar"]}
+];
+const OPEN=[
+"Baptismo de Rodrigo de Souza, c. 1750–1770, Albufeira. Só há registos digitalizados desde 1833: é preciso pedir ao Arquivo Distrital de Faro.",
+"Casamento de Rodrigo de Souza e Maria da Glória, antes de Abr 1796. Faltam as páginas 16–64 do livro de Barão de São Miguel, as primeiras páginas do livro da Luz (antes de 1776) e as do Barão de São João (antes de 1774).",
+"Óbito de Rodrigo de Souza, depois de 1818. Luz e Barão de São João estão revistos de 1802 a 1875 sem resultado. Próximo: Bensafrim.",
+"Baptismo de Maria da Glória, c. 1755–1775, provavelmente Barão de São Miguel (Vila do Bispo).",
+"Casamento de António Joaquim de Souza e Anna Joaquina. Falta o livro da Luz de 1803–1827; tentar a Mexilhoeira Grande e os duplicados diocesanos.",
+"Baptismo de Maria Thereza (Barão de São João, 1785–1800) e de Catharina Maria (Luz).",
+"Óbito de Catharina Maria: não consta na Luz até 1905.",
+"Casamento de 1923 (assento n.º 74) para fixar o dia, 3 ou 8 de Abril."
+];
+const $=s=>document.querySelector(s);
+const rels={};
+F.forEach((f,i)=>{[f.h,f.w].filter(Boolean).forEach(id=>{(rels[id]=rels[id]||{sp:[],kids:[],par:null,sib:[]});});
+  f.k.forEach(k=>{(rels[k]=rels[k]||{sp:[],kids:[],par:null,sib:[]}).par=[f.h,f.w].filter(Boolean)});});
+F.forEach(f=>{
+  if(f.h&&f.w){rels[f.h].sp.push(f.w);rels[f.w].sp.push(f.h);}
+  [f.h,f.w].filter(Boolean).forEach(id=>f.k.forEach(k=>{if(!rels[id].kids.includes(k))rels[id].kids.push(k)}));
+  f.k.forEach(k=>rels[k].sib=f.k.filter(x=>x!==k));
+  [["hp",f.h],["wp",f.w]].forEach(([key,id])=>{if(f[key]&&id){f[key].forEach(p=>{(rels[p]=rels[p]||{sp:[],kids:[],par:null,sib:[]}).kids.push(id)});rels[id].par=f[key]; rels[f[key][0]].sp.push(f[key][1]);rels[f[key][1]].sp.push(f[key][0]);}});
+});
+const years=p=>{const a=(p.nasc||"").match(/\d{4}/),b=(p.morte||"").match(/\d{4}/);return (a?a[0]:"")+(a||b?"–":"")+(b?b[0]:"")};
+function chip(id,cls=""){const p=P[id];const dot=p.flag?'<span class="dot" title="falta confirmar"></span>':"";
+  const sub=years(p)||p.d||p.local||"";
+  return `<button class="chip t-${p.t} ${cls}" data-id="${id}"><b>${p.n}${dot}</b>${sub?`<small>${sub}</small>`:""}</button>`}
+function render(){
+  $("#tree").innerHTML=F.map(f=>{
+    const line=P[f.h].t==="line";
+    const col=(id,par)=>id?`<div class="col">${chip(id)}${par?`<div class="parents">filho(a) de ${par.map(x=>chip(x,"sm")).join('<span>e</span>')}</div>`:""}</div>`:"";
+    return `<section class="fam ${line?"has-line":""}"><div><h2>${f.t}</h2><p class="meta">${f.m}</p></div>
+      <div class="couple">${col(f.h,f.hp)}${f.w?'<span class="x">×</span>':""}${f.w?col(f.w,f.wp):""}</div>
+      <div class="kids-label">Filhos</div><div class="kids">${f.k.map(k=>chip(k)).join("")}</div></section>`}).join("");
+  $("#open").innerHTML=`<h2>O que ainda falta</h2><ul>${OPEN.map(o=>`<li>${o}</li>`).join("")}</ul>`;
+  $("#refs").innerHTML=index();
+}
+function link(id){return chip(id,"sm")}
+function refs(p){const k=[...new Set(p.src||[])];
+  if(!k.length)return `<div class="sec">Fontes</div><p class="src">Ainda sem assento transcrito nesta página.</p>`;
+  return `<div class="sec">Fontes</div>`+k.map(x=>{const r=REF[x];return `<div class="ref"><b>${r.t}</b><span>${r.data}</span><span>${r.livro}</span><code>${r.cota}</code><span>${r.loc}</span></div>`}).join("")}
+function neg(id){const a=NEG[id];return a?`<div class="sec">Já procurado, sem resultado</div><ul class="notes">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}
+function index(){const used={};Object.values(P).forEach(p=>(p.src||[]).forEach(k=>{(used[k]=used[k]||[]).push(p.n)}));
+  return `<h2>Livros e assentos</h2><p class="hint">Todas as imagens estão no DigitArq do Arquivo Distrital de Faro. Procura pela cota. O número da imagem conta desde a primeira imagem do livro no leitor e pode variar nos livros digitalizados em duplicado.</p>`+
+  Object.entries(REF).map(([k,r])=>`<div class="ref"><b>${r.t}</b><span>${r.data}</span><span>${r.livro}</span><code>${r.cota}</code><span>${r.loc}</span><span class="who">${[...new Set(used[k]||[])].join(" · ")}</span></div>`).join("")}
+function show(id,scroll){
+  const p=P[id],r=rels[id]||{sp:[],kids:[],par:null,sib:[]};
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-current",c.dataset.id===id?"true":"false"));
+  const rows=[["Nascimento",p.nasc],["Local",p.local||p.d],["Morte",p.morte]].filter(x=>x[1]);
+  const grp=(t,a)=>a&&a.length?`<div class="sec">${t}</div><div class="links">${a.map(link).join("")}</div>`:"";
+  $("#panel").innerHTML=`<button class="close" id="x">Fechar</button><h3>${p.n}</h3><p class="rel">${p.rel||(id==="mar"?"Tu":"")}</p>
+   ${rows.length?`<dl>${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`:""}
+   ${p.flag?`<p class="flag">${p.flag}</p>`:""}
+   ${p.notes.length?`<ul class="notes">${p.notes.map(n=>`<li>${n}</li>`).join("")}</ul>`:""}
+   ${grp("Pais",r.par)}${grp(r.sp.length>1?"Cônjuges":"Cônjuge",[...new Set(r.sp)])}${grp("Filhos",[...new Set(r.kids)])}${grp("Irmãos",r.sib)}
+   ${refs(p)}${neg(id)}`;
+  $("#panel").classList.add("open");
+  $("#x").onclick=()=>{$("#panel").classList.remove("open")};
+  try{history.replaceState(null,"","#"+id)}catch(e){}
+}
+render();
+$("#panel").innerHTML='<p class="empty">Escolhe um nome para ver a ficha, as datas e onde está o assento.</p>';
+document.addEventListener("click",e=>{const c=e.target.closest(".chip");if(c)show(c.dataset.id)});
+function mode(line){document.body.classList.toggle("only-line",line);$("#b-all").setAttribute("aria-pressed",!line);$("#b-line").setAttribute("aria-pressed",line)}
+$("#b-all").onclick=()=>mode(false);$("#b-line").onclick=()=>mode(true);
+const h=location.hash.slice(1);if(h&&P[h])show(h);
+</script>
+
+</body></html>
